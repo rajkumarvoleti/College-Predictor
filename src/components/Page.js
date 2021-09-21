@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
   html {
     --blue: #383E4D;
     --darkblue: #1C1F22;
-    --black: #393939;
+    --black: #1C1F22;
     --grey: #3A3A3A;
     --gray: var(--grey);
     --lightGrey: #e1e1e1;
@@ -42,10 +42,13 @@ const GlobalStyles = createGlobalStyle`
   button {
     font-family: 'radnika_next', --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
   }
+  textarea:focus, input:focus{
+    outline:none;
+}
 `;
 
 const InnerStyles = styled.div`
-  max-width: var(--maxWidth);
+  max-width: 100vw;
   margin: 0 auto;
   padding: 1rem 5rem;
 `;

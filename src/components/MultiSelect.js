@@ -1,9 +1,11 @@
 import Multiselect from "multiselect-react-dropdown";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import styled from "styled-components";
 
 const MultiSelectStyles = {
   multiselectContainer: {
     // To change css for multiselect (Width,height,etc..)
+    display: "flex",
     color: "white",
   },
   searchBox: {
@@ -37,10 +39,52 @@ const MultiSelectStyles = {
   // }
 };
 
-export default function MultiSelect({ name, options, handleChange }) {
+const MultiSelectDivStyles = styled.div`
+  display: flex;
+  align-items: center;
+  p {
+    text-transform: capitalize;
+    margin-right: 20px;
+    width: 100px;
+  }
+  button {
+    margin-left: 20px;
+    border: 1px solid var(--blue);
+    border-radius: 10px;
+    height: 30px;
+  }
+  @media (max-width: 500px) {
+    width: 80vw;
+  }
+`;
+
+export default function MultiSelect({ name, options, limit, handleChange }) {
+  const [value, setValue] = useState([]);
   const multiSelectref = useRef();
+
+  // add reset and selectall options
+  if (limit !== 1 && options.length !== 1)
+    options = [
+      { name: "Reset", value: 0 },
+      { name: "SelectAll", value: 1 },
+      ...options,
+    ];
+
+  //change accorfding to the option
+  function handleChangeUtil(name, selectedList, selectedItem) {
+    if (selectedItem.name === "Reset") {
+      setValue([]);
+      selectedList = [];
+    } else if (selectedItem.name === "SelectAll") {
+      selectedList = options;
+      setValue(options);
+    }
+    handleChange(name, selectedList);
+  }
+
   return (
-    <div>
+    <MultiSelectDivStyles>
+      <p>{name}</p>
       <Multiselect
         name={name}
         options={options}
@@ -48,21 +92,18 @@ export default function MultiSelect({ name, options, handleChange }) {
         style={MultiSelectStyles}
         displayValue="name"
         showCheckbox="true"
-        voidHighlightFirstOption="true"
-        onSelect={(selectedList) => handleChange(name, selectedList)}
-        onRemove={(selectedList) => handleChange(name, selectedList)}
+        avoidHighlightFirstOption="true"
+        selectionLimit={limit}
+        onSelect={(selectedList, selectedItem) =>
+          handleChangeUtil(name, selectedList, selectedItem)
+        }
+        onRemove={(selectedList, selectedItem) =>
+          handleChangeUtil(name, selectedList, selectedItem)
+        }
         ref={multiSelectref}
-        id={name}
+        className="multi"
+        selectedValues={value}
       />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          handleChange(name, []);
-          multiSelectref.current.resetSelectedValues();
-        }}
-      >
-        Reset
-      </button>
-    </div>
+    </MultiSelectDivStyles>
   );
 }
