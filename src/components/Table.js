@@ -14,6 +14,8 @@ const TableDiv = styled.table`
   border: 2px solid black;
   border-radius: 15px;
   thead {
+    border-top: 0.1px solid black;
+    border-radius: 15px 15px 0 0;
     width: 100%;
     background-color: var(--black);
     opacity: 80%;

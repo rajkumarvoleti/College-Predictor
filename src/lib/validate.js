@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 
 export function Swal_error(error_name) {
+  if (error_name === "seat") error_name = "gender";
   Swal.fire({
     title: "Error!",
     text: `Please fill the ${error_name} input properly`,

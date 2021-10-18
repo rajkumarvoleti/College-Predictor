@@ -5,6 +5,8 @@ const GlobalStyles = createGlobalStyle`
     --lightblue: #30647D;
     --blue: #255057;
     --darkblue: #2C3E50;
+    --green: #42ba96;
+    --red: 	#df4759;
     --black: #1C1F22;
     --grey: #3A3A3A;
     --gray: var(--grey);
@@ -79,6 +81,16 @@ const GlobalStyles = createGlobalStyle`
     20%, 24%, 55% {        
         text-shadow: none;
     }    
+  }
+  .success{
+    box-shadow: 0px 0px 15px 4px var(--green);
+    -webkit-box-shadow: 0px 0px 15px 4px var(--green);
+    -moz-box-shadow: 0px 0px 15px 4px var(--green);
+  }
+  .failure{
+    box-shadow: 1px 0px 25px 5px var(--red);
+    -webkit-box-shadow: 1px 0px 25px 5px var(--red);
+    -moz-box-shadow: 1px 0px 25px 5px var(--red);
   }
 `;
 

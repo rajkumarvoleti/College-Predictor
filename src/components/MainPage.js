@@ -99,10 +99,12 @@ export default function MainPage(props) {
 
   //changing collegeList
   let collegeList = [];
-  if (inputs.type.length === 0) collegeList = ["Select College type"];
+  if (inputs.type.length === 0 && inputs.exam.length === 0)
+    collegeList = ["Select College type"];
   else {
     types.forEach((type) => {
-      collegeList = [...collegeList, ...clgs_by_type[type]];
+      if (clgs_by_type[type])
+        collegeList = [...collegeList, ...clgs_by_type[type]];
     });
     collegeList = collegeList.map((clg) => clg.institute);
   }

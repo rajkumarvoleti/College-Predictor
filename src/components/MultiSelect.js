@@ -30,8 +30,8 @@ const MultiSelectStyles = {
   option: {
     // To change css for dropdown options
     color: "white",
-    "font-family": "Hind, sans-serif",
-    "font-size": "14px",
+    fontFamily: "Hind, sans-serif",
+    fontSize: "14px",
   },
   "option::hover": {
     display: "none",
@@ -74,7 +74,11 @@ export default function MultiSelect({
   Options.forEach((option) => {
     options.push({ name: option });
   });
+
   const [value, setValue] = useState([]);
+  const [className, setClassName] = useState("");
+  const [dataLength, setDataLength] = useState(0);
+
   if (limit !== 1 && options.length > 1)
     // add reset and selectall options
     options = [
@@ -85,6 +89,9 @@ export default function MultiSelect({
 
   //change accorfding to the option
   function handleChangeUtil(name, selectedList, selectedItem) {
+    if (selectedList.length === 0) setClassName("failure");
+    else setClassName("success");
+
     if (selectedItem.name === "Reset") {
       setValue([]);
       selectedList = [];
@@ -92,6 +99,7 @@ export default function MultiSelect({
       selectedList = options;
       setValue(options);
     }
+    setDataLength(selectedList.length);
     handleChange(name, selectedList);
   }
 
@@ -100,29 +108,37 @@ export default function MultiSelect({
     setReset(false);
   }
 
+  const getPlaceHolder = () => {
+    if (dataLength === 0) return "Select an option";
+    else if (dataLength === 1) return "1 option selected";
+    else return `${dataLength} options selected`;
+  };
+
   return (
     <MultiSelectDivStyles>
       <p>{displayName}</p>
-      <Multiselect
-        name={name}
-        options={options}
-        closeOnSelect={false}
-        style={MultiSelectStyles}
-        displayValue="name"
-        showCheckbox="true"
-        avoidHighlightFirstOption="true"
-        keepSearchTerm="true"
-        selectionLimit={limit}
-        onSelect={(selectedList, selectedItem) =>
-          handleChangeUtil(name, selectedList, selectedItem)
-        }
-        onRemove={(selectedList, selectedItem) =>
-          handleChangeUtil(name, selectedList, selectedItem)
-        }
-        ref={multiSelectref}
-        className="multi"
-        selectedValues={value}
-      />
+      <div className={"multi " + className}>
+        <Multiselect
+          name={name}
+          options={options}
+          closeOnSelect={false}
+          style={MultiSelectStyles}
+          displayValue="name"
+          showCheckbox="true"
+          avoidHighlightFirstOption="true"
+          keepSearchTerm="true"
+          selectionLimit={limit}
+          onSelect={(selectedList, selectedItem) =>
+            handleChangeUtil(name, selectedList, selectedItem)
+          }
+          onRemove={(selectedList, selectedItem) =>
+            handleChangeUtil(name, selectedList, selectedItem)
+          }
+          ref={multiSelectref}
+          selectedValues={value}
+          placeholder={getPlaceHolder()}
+        />
+      </div>
     </MultiSelectDivStyles>
   );
 }
