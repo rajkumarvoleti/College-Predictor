@@ -9,7 +9,8 @@ function getList(key, all_clgs) {
   all_clgs.forEach((clg) => {
     list.add(clg[key]);
   });
-  list = [...list].sort();
+  list = [...list];
+  if (key !== "type") list = list.sort();
   return list;
 }
 

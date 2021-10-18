@@ -11,5 +11,3 @@ export default function App() {
     </InputStateProvider>
   );
 }
-
-// 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
