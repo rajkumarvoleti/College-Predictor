@@ -9,7 +9,7 @@ function getList(key, all_clgs) {
   all_clgs.forEach((clg) => {
     list.add(clg[key]);
   });
-  list = [...list];
+  list = [...list].sort();
   return list;
 }
 

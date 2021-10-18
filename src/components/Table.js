@@ -2,6 +2,7 @@ import { useInputs } from "../lib/InputState";
 import filter_clg from "../lib/filter_clg";
 import styled from "styled-components";
 import useWindowDimensions from "../lib/WindowDimensions";
+import uniqid from "uniqid";
 
 const TableDiv = styled.table`
   width: 100%;
@@ -11,8 +12,11 @@ const TableDiv = styled.table`
   justify-content: center;
   flex-direction: column;
   border: 2px solid black;
+  border-radius: 15px;
   thead {
     width: 100%;
+    background-color: var(--black);
+    opacity: 80%;
   }
   thead tc,
   tbody tc {
@@ -85,19 +89,26 @@ export default function Table({
         </tc>
       </thead>
       <tbody>
-        {data.map((clg) => {
-          return (
-            <tc>
-              {clg.map((data) => {
-                return (
-                  <td className={typeof data === "number" ? "rank" : ""}>
-                    {data}
-                  </td>
-                );
-              })}
-            </tc>
-          );
-        })}
+        {data.length === 0 ? (
+          <p>No colleges found</p>
+        ) : (
+          data.map((clg) => {
+            return (
+              <tc key={uniqid()}>
+                {clg.map((data) => {
+                  return (
+                    <td
+                      key={uniqid()}
+                      className={typeof data === "number" ? "rank" : ""}
+                    >
+                      {data}
+                    </td>
+                  );
+                })}
+              </tc>
+            );
+          })
+        )}
       </tbody>
     </TableDiv>
   );

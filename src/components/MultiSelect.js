@@ -25,11 +25,13 @@ const MultiSelectStyles = {
   optionContainer: {
     // To change css for option container
     border: "2px solid #1C1F22",
-    backgroundColor: "#383E4D",
+    backgroundColor: "#2C3E50",
   },
   option: {
     // To change css for dropdown options
     color: "white",
+    "font-family": "Hind, sans-serif",
+    "font-size": "14px",
   },
   "option::hover": {
     display: "none",
@@ -65,6 +67,7 @@ export default function MultiSelect({
   handleChange,
   reset,
   setReset,
+  displayName,
 }) {
   const multiSelectref = react.createRef();
   let options = [];
@@ -99,7 +102,7 @@ export default function MultiSelect({
 
   return (
     <MultiSelectDivStyles>
-      <p>{name}</p>
+      <p>{displayName}</p>
       <Multiselect
         name={name}
         options={options}

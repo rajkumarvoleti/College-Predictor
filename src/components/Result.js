@@ -7,13 +7,14 @@ const ResultPage = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  min-height: 100vh;
 `;
 
 const Pagination = styled.div`
   width: 100%;
   max-width: 800px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   button {
     width: 50px;
@@ -42,7 +43,7 @@ export default function Result() {
 
   return (
     <ResultPage>
-      <h1>Result</h1>
+      <h1 className="neonText">Result</h1>
       <Table
         updateLength={setDataLength}
         dataLength={dataLength}

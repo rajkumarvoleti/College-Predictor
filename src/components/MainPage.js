@@ -48,6 +48,9 @@ const MainPageStyles = styled.div`
       width: 90%;
       height: 40px;
     }
+    input.rank::placeholder {
+      color: black;
+    }
   }
   form .btn {
     width: 100%;
@@ -63,6 +66,9 @@ const MainPageStyles = styled.div`
       border-radius: 10px;
       color: white;
       letter-spacing: 0.8px;
+    }
+    @media (max-width: 500px) {
+      margin-bottom: 40vh;
     }
   }
 `;
@@ -85,7 +91,7 @@ export default function MainPage(props) {
   // changing type of college
   let types = Types;
   if (inputs.exam.length === 0) types = ["Select Exam type"];
-  if (inputs.exam[0]?.name === "JEE Advanced") {
+  else if (inputs.exam[0]?.name === "JEE Advanced") {
     types = [types[0]];
   } else {
     types = types.slice(1, 4);
@@ -113,13 +119,14 @@ export default function MainPage(props) {
   }
   return (
     <MainPageStyles>
-      <h1>College Predictor</h1>
+      <h1 className="neonText">College Predictor</h1>
       <div>
         <form onSubmit={handleSubmit}>
           <fieldset>
             <label htmlFor="rank">
               <input
                 name="rank"
+                className="rank"
                 type="number"
                 onChange={handleChange}
                 placeholder="Please Enter Your Rank"
@@ -131,24 +138,28 @@ export default function MainPage(props) {
               handleChange={getOptions}
               name="exam"
               options={exams}
+              displayName="Exam"
               limit={1}
             />
             <MultiSelect
               handleChange={getOptions}
               name="type"
               options={types}
+              displayName="Institute type"
             />
             <MultiSelect
               reset={reset}
               setReset={setReset}
               handleChange={getOptions}
               name="institute"
+              displayName="Institute"
               options={collegeList}
             />
             <MultiSelect
               reset={reset}
               setReset={setReset}
               handleChange={getOptions}
+              displayName="Program"
               name="program"
               options={streams}
             />
@@ -157,6 +168,7 @@ export default function MainPage(props) {
               setReset={setReset}
               handleChange={getOptions}
               name="category"
+              displayName="Category"
               options={categories}
               limit={1}
             />
@@ -165,6 +177,7 @@ export default function MainPage(props) {
               setReset={setReset}
               handleChange={getOptions}
               name="quota"
+              displayName="Quota"
               options={quotas}
             />
             <MultiSelect
@@ -172,6 +185,7 @@ export default function MainPage(props) {
               setReset={setReset}
               handleChange={getOptions}
               name="seat"
+              displayName="Gender"
               options={genders}
               limit={1}
             />
@@ -180,6 +194,7 @@ export default function MainPage(props) {
               setReset={setReset}
               handleChange={getOptions}
               name="courseDuration"
+              displayName="course duration"
               options={courseDuration}
             />
           </fieldset>
