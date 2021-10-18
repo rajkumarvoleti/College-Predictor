@@ -89,9 +89,6 @@ export default function MultiSelect({
 
   //change accorfding to the option
   function handleChangeUtil(name, selectedList, selectedItem) {
-    if (selectedList.length === 0) setClassName("failure");
-    else setClassName("success");
-
     if (selectedItem.name === "Reset") {
       setValue([]);
       selectedList = [];
@@ -99,6 +96,23 @@ export default function MultiSelect({
       selectedList = options;
       setValue(options);
     }
+
+    // filter items
+    const notClg = [
+      "Reset",
+      "SelectAll",
+      "Select College type",
+      "Select Exam type",
+    ];
+    selectedList = selectedList.filter((item) => {
+      return !notClg.includes(item.name);
+    });
+
+    // change border
+    if (selectedList.length === 0) setClassName("failure");
+    else setClassName("success");
+
+    // updateLength
     setDataLength(selectedList.length);
     handleChange(name, selectedList);
   }
