@@ -1,11 +1,11 @@
 import Multiselect from "multiselect-react-dropdown";
-import React, { useRef, useState } from "react";
+import react from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const MultiSelectStyles = {
   multiselectContainer: {
     // To change css for multiselect (Width,height,etc..)
-    display: "flex",
     color: "white",
   },
   searchBox: {
@@ -58,12 +58,22 @@ const MultiSelectDivStyles = styled.div`
   }
 `;
 
-export default function MultiSelect({ name, options, limit, handleChange }) {
+export default function MultiSelect({
+  name,
+  options: Options,
+  limit,
+  handleChange,
+  reset,
+  setReset,
+}) {
+  const multiSelectref = react.createRef();
+  let options = [];
+  Options.forEach((option) => {
+    options.push({ name: option });
+  });
   const [value, setValue] = useState([]);
-  const multiSelectref = useRef();
-
-  // add reset and selectall options
-  if (limit !== 1 && options.length !== 1)
+  if (limit !== 1 && options.length > 1)
+    // add reset and selectall options
     options = [
       { name: "Reset", value: 0 },
       { name: "SelectAll", value: 1 },
@@ -82,6 +92,11 @@ export default function MultiSelect({ name, options, limit, handleChange }) {
     handleChange(name, selectedList);
   }
 
+  //  if reset is clicked int he main page
+  if (reset && value.length !== 0) {
+    setReset(false);
+  }
+
   return (
     <MultiSelectDivStyles>
       <p>{name}</p>
@@ -93,6 +108,7 @@ export default function MultiSelect({ name, options, limit, handleChange }) {
         displayValue="name"
         showCheckbox="true"
         avoidHighlightFirstOption="true"
+        keepSearchTerm="true"
         selectionLimit={limit}
         onSelect={(selectedList, selectedItem) =>
           handleChangeUtil(name, selectedList, selectedItem)

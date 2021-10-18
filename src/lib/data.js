@@ -1,78 +1,65 @@
-const dataFile = require("../data.json");
+import data from "../data.json";
 
-export const rounds = dataFile.values.round;
+// caste
+export const caste = Object.keys(data);
 
-const collegeList = dataFile.values.college;
-
-const IIT_str1 = "Indian Institute  of Technology";
-const IIT_str2 = "Indian Institute of Technology";
-const NIT_str = "National Institute of Technology";
-const IIEST_str = "Indian Institute of Engineering Science and Technology";
-const IIIT_str1 = "Indian institute of information technology";
-const IIIT_str2 = "Indian Institute of Information Technology";
-
-function getObject(str1, str2, data) {
-  return data
-    .filter((college) => {
-      if (college.includes(str1) || college.includes(str2)) return true;
-      return false;
-    })
-    .map((college) => {
-      return {
-        name: college,
-        value: college,
-      };
-    });
-}
-
-function getMap(obj) {
-  return obj.map((data) => {
-    return {
-      name: data,
-      value: data,
-    };
+// helping function
+function getList(key, all_clgs) {
+  let list = new Set();
+  all_clgs.forEach((clg) => {
+    list.add(clg[key]);
   });
+  list = [...list];
+  return list;
 }
 
-export const Exams = [
-  { name: "JEE MAIN", value: "JEE MAIN" },
-  { name: "JEE ADVANCE", value: "JEE ADVANCE" },
-];
-
-export const Type = [
-  { name: "IIT's", value: "IIT's" },
-  { name: "NIT's", value: "NIT's" },
-  { name: "IIIT's", value: "IIIT's" },
-  { name: "GFTI's", value: "GFTI's" },
-];
-
-export const IITcollegeList = getObject(IIT_str1, IIT_str2, collegeList);
-
-export const NITcollegeList = getObject(NIT_str, IIEST_str, collegeList);
-
-export const IIITcollegeList = getObject(IIIT_str1, IIIT_str2, collegeList);
-
-export const GFTIcollegeList = collegeList
-  .filter((college) => {
+// IIEST to NIT
+caste.forEach((key) => {
+  data[key].forEach((clg) => {
     if (
-      IIITcollegeList.includes(college) ||
-      IITcollegeList.includes(college) ||
-      NITcollegeList.includes(college)
-    )
-      return false;
-    return true;
-  })
-  .map((college) => {
-    return {
-      name: college,
-      value: college,
-    };
+      clg.institute ===
+      "Indian Institute of Engineering Science and Technology, Shibpur"
+    ) {
+      clg.type = "NIT";
+    }
   });
+});
 
-export const stream = getMap(dataFile.values.stream);
-export const category = getMap(dataFile.values.category);
-export const quota = getMap(dataFile.values.quota);
-export const gender = [
-  { name: "Female", value: "Female" },
-  { name: "Gender-Neutral", value: "Gender-Neutral" },
-];
+// all college list
+export const all_clgs = [];
+caste.forEach((key) => {
+  all_clgs.push(...data[key]);
+});
+
+// types of colleges
+export const types = getList("type", all_clgs);
+
+// types of streams
+export const streams = getList("program", all_clgs);
+
+// types of categories
+export const categories = getList("category", all_clgs);
+
+// types of quotas
+export const quotas = getList("quota", all_clgs);
+
+// types of genders
+export const genders = getList("seat", all_clgs);
+
+// types of duration
+export const courseDuration = getList("courseDuration", all_clgs);
+
+export const exams = ["JEE Advanced", "JEE Main"];
+
+// categorizing ollege list by type
+const clgs_by_type = {};
+types.forEach((type) => {
+  clgs_by_type[type] = [];
+});
+all_clgs.forEach((clg) => {
+  clgs_by_type[clg.type].push(clg);
+});
+
+export { clgs_by_type };
+
+export default data;

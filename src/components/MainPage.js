@@ -1,19 +1,21 @@
 import styled from "styled-components";
 import useForm from "../lib/useForm";
 import {
-  category,
-  Exams,
-  gender,
-  GFTIcollegeList,
-  IIITcollegeList,
-  IITcollegeList,
-  NITcollegeList,
-  quota,
-  stream,
-  Type,
+  categories,
+  exams,
+  clgs_by_type,
+  genders,
+  quotas,
+  streams,
+  types as Types,
+  courseDuration,
 } from "../lib/data";
 import MultiSelect from "./MultiSelect";
+import validate from "../lib/validate";
+import React, { useState } from "react";
+import { useInputs } from "../lib/InputState";
 
+//styles
 const MainPageStyles = styled.div`
   display: flex;
   align-items: center;
@@ -26,121 +28,164 @@ const MainPageStyles = styled.div`
     grid-gap: 20px;
     grid-template-columns: 1fr 1fr 1fr;
     border: none;
-    label {
-      p {
-        display: inline;
-      }
-      input {
-        display: inline;
-        margin-left: 60px;
-        padding-left: 10px;
-        height: 40px;
-        width: 180px;
-        background-color: var(--blue);
-        border: 2px solid var(--black);
-        border-radius: 5px;
-        color: white;
-      }
-    }
     @media (max-width: 800px) {
       grid-template-columns: 1fr 1fr;
     }
     @media (max-width: 500px) {
       grid-template-columns: 1fr;
       width: 80vw;
-      label {
-      }
-      label input {
-        margin-left: 38px;
-        width: 200px;
-      }
+    }
+  }
+  form fieldset label {
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: center;
+    input {
+      border: 3px solid var(--black);
+      background-color: aliceblue;
+      border-radius: 10px;
+      padding: 0 20px;
+      width: 90%;
+      height: 40px;
+    }
+  }
+  form .btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+      width: 100px;
+      height: 40px;
+      margin: 20px 10px;
+      background-color: var(--lightblue);
+      border: 1px;
+      border-radius: 10px;
+      color: white;
+      letter-spacing: 0.8px;
     }
   }
 `;
 
-export default function MainPage() {
-  const { inputs, handleChange, getOptions, clearForm, resetForm } = useForm({
-    name: "Nice Shoes",
+export default function MainPage(props) {
+  const { updateInputs } = useInputs();
+  const [reset, setReset] = useState(false);
+  const { inputs, handleChange, getOptions } = useForm({
+    rank: 999999,
     type: [],
-    college: [],
-    branch: [],
+    institute: [],
+    category: [],
+    program: [],
+    quota: [],
     exam: [],
+    seat: [],
+    courseDuration: [],
   });
-  // console.log(Type);
 
   // changing type of college
-  let type = Type;
-  if (inputs.exam.length === 0)
-    type = [{ name: "Select Exam type", value: "0" }];
-  if (inputs.exam[0]?.name === "JEE ADVANCE" && Type) {
-    type = [Type[0]];
-  }
-  if (inputs.exam[0]?.name === "JEE MAIN" && Type) {
-    type = Type.slice(1, 4);
+  let types = Types;
+  if (inputs.exam.length === 0) types = ["Select Exam type"];
+  if (inputs.exam[0]?.name === "JEE Advanced") {
+    types = [types[0]];
+  } else {
+    types = types.slice(1, 4);
   }
 
   //changing collegeList
   let collegeList = [];
-  if (inputs.type.length === 0)
-    collegeList = [{ name: "Select College type", value: "0" }];
+  if (inputs.type.length === 0) collegeList = ["Select College type"];
   else {
-    inputs.type.forEach((college) => {
-      if (college.name === "IIT's")
-        collegeList = [...collegeList, ...IITcollegeList];
-      if (college.name === "NIT's")
-        collegeList = [...collegeList, ...NITcollegeList];
-      if (college.name === "IIIT's")
-        collegeList = [...collegeList, ...IIITcollegeList];
-      if (college.name === "GFTI's")
-        collegeList = [...collegeList, ...GFTIcollegeList];
+    types.forEach((type) => {
+      collegeList = [...collegeList, ...clgs_by_type[type]];
     });
+    collegeList = collegeList.map((clg) => clg.institute);
+  }
+  // taking unique values
+  collegeList = new Set(collegeList);
+  collegeList = [...collegeList];
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (validate(inputs)) {
+      updateInputs(inputs);
+      props.history.push("/result");
+    }
   }
   return (
     <MainPageStyles>
       <h1>College Predictor</h1>
       <div>
-        <form action="POST">
+        <form onSubmit={handleSubmit}>
           <fieldset>
+            <label htmlFor="rank">
+              <input
+                name="rank"
+                type="number"
+                onChange={handleChange}
+                placeholder="Please Enter Your Rank"
+              />
+            </label>
             <MultiSelect
-              name="exam"
+              reset={reset}
+              setReset={setReset}
               handleChange={getOptions}
-              options={Exams}
+              name="exam"
+              options={exams}
               limit={1}
             />
-            <label htmlFor="rank">
-              <p>Rank</p>
-              <input name="rank" onChange={handleChange} placeholder="Enter" />
-            </label>
-            <MultiSelect name="type" handleChange={getOptions} options={type} />
             <MultiSelect
-              name="college"
               handleChange={getOptions}
+              name="type"
+              options={types}
+            />
+            <MultiSelect
+              reset={reset}
+              setReset={setReset}
+              handleChange={getOptions}
+              name="institute"
               options={collegeList}
             />
             <MultiSelect
-              name="stream"
+              reset={reset}
+              setReset={setReset}
               handleChange={getOptions}
-              options={stream}
+              name="program"
+              options={streams}
             />
             <MultiSelect
+              reset={reset}
+              setReset={setReset}
+              handleChange={getOptions}
               name="category"
-              handleChange={getOptions}
-              options={category}
+              options={categories}
               limit={1}
             />
             <MultiSelect
+              reset={reset}
+              setReset={setReset}
+              handleChange={getOptions}
               name="quota"
+              options={quotas}
+            />
+            <MultiSelect
+              reset={reset}
+              setReset={setReset}
               handleChange={getOptions}
-              options={quota}
+              name="seat"
+              options={genders}
               limit={1}
             />
             <MultiSelect
-              name="gender"
+              reset={reset}
+              setReset={setReset}
               handleChange={getOptions}
-              options={gender}
-              limit={1}
+              name="courseDuration"
+              options={courseDuration}
             />
           </fieldset>
+          <div className="btn">
+            <button type="submit">Submit</button>
+          </div>
         </form>
       </div>
     </MainPageStyles>

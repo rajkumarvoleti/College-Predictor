@@ -1,13 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-  @font-face {
-    font-family: 'radnika_next';
-    src: url('/static/radnikanext-medium-webfont.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  }
   html {
+    --lightblue: #30647D;
     --blue: #383E4D;
     --darkblue: #1C1F22;
     --black: #1C1F22;
@@ -24,7 +19,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: inherit;
   }
   body {
-    font-family: 'radnika_next', --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: var(--blue);
     color: #e1e1e1;
     padding: 0;
@@ -40,17 +35,21 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: underline;
   }
   button {
-    font-family: 'radnika_next', --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    font-family:  --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
   }
   textarea:focus, input:focus{
     outline:none;
 }
+
 `;
 
 const InnerStyles = styled.div`
   max-width: 100vw;
   margin: 0 auto;
   padding: 1rem 5rem;
+  @media only screen and (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
 
 export default function Page({ children }) {
