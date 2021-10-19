@@ -90,7 +90,7 @@ export default function MultiSelect({
       ...options,
     ];
 
-  async function handleChangeUtil(name, selectedList, selectedItem) {
+  async function handleChangeUtil(name, selectedList, selectedItem, include) {
     // selct alll and reset functionaity
     if (selectedItem.name === "Reset") {
       selectedList = [];
@@ -98,7 +98,12 @@ export default function MultiSelect({
     } else if (selectedItem.name === "SelectAll") {
       selectedList = options;
       setValue(options);
-    } else setValue([...value, selectedItem]);
+    } else if (limit !== 1 && options.length > 1) {
+      if (include && !value.includes(selectedItem))
+        setValue([...value, selectedItem]);
+      if (!include && value.includes(selectedItem))
+        setValue(value.filter((item) => item !== selectedItem));
+    }
 
     // filter items
     const notClg = [
@@ -142,10 +147,10 @@ export default function MultiSelect({
           keepSearchTerm="true"
           selectionLimit={limit}
           onSelect={(selectedList, selectedItem) =>
-            handleChangeUtil(name, selectedList, selectedItem)
+            handleChangeUtil(name, selectedList, selectedItem, true)
           }
           onRemove={(selectedList, selectedItem) =>
-            handleChangeUtil(name, selectedList, selectedItem)
+            handleChangeUtil(name, selectedList, selectedItem, false)
           }
           ref={multiSelectref}
           selectedValues={value}

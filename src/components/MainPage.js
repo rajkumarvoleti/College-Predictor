@@ -98,16 +98,24 @@ export default function MainPage(props) {
   }
 
   //changing collegeList
-  let collegeList = [];
-  if (inputs.type.length === 0 && inputs.exam.length === 0)
-    collegeList = ["Select College type"];
-  else {
-    types.forEach((type) => {
-      if (clgs_by_type[type])
-        collegeList = [...collegeList, ...clgs_by_type[type]];
-    });
-    collegeList = collegeList.map((clg) => clg.institute);
+  function getCollegeList() {
+    let collegeList = [];
+    if (
+      inputs.type.length === 0 ||
+      inputs.exam.length === 0 ||
+      inputs.type[0] === "Select Exam type"
+    )
+      collegeList = ["Select College type"];
+    else {
+      inputs.type.forEach((type) => {
+        if (clgs_by_type[type.name])
+          collegeList = [...collegeList, ...clgs_by_type[type.name]];
+      });
+      collegeList = collegeList.map((clg) => clg.institute);
+    }
+    return collegeList;
   }
+  let collegeList = getCollegeList();
 
   // taking unique values
   collegeList = new Set(collegeList);
