@@ -12,7 +12,7 @@ import {
 } from "../lib/data";
 import MultiSelect from "./MultiSelect";
 import validate from "../lib/validate";
-import React, { useState } from "react";
+import React from "react";
 import { useInputs } from "../lib/InputState";
 
 //styles
@@ -74,8 +74,8 @@ const MainPageStyles = styled.div`
 `;
 
 export default function MainPage(props) {
+  // form variables
   const { updateInputs } = useInputs();
-  const [reset, setReset] = useState(false);
   const { inputs, handleChange, getOptions } = useForm({
     rank: 999999,
     type: [],
@@ -108,6 +108,7 @@ export default function MainPage(props) {
     });
     collegeList = collegeList.map((clg) => clg.institute);
   }
+
   // taking unique values
   collegeList = new Set(collegeList);
   collegeList = [...collegeList];
@@ -119,6 +120,7 @@ export default function MainPage(props) {
       props.history.push("/result");
     }
   }
+
   return (
     <MainPageStyles>
       <h1 className="neonText">College Predictor</h1>
@@ -135,8 +137,6 @@ export default function MainPage(props) {
               />
             </label>
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               name="exam"
               options={exams}
@@ -150,24 +150,18 @@ export default function MainPage(props) {
               displayName="Institute type"
             />
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               name="institute"
               displayName="Institute"
               options={collegeList}
             />
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               displayName="Program"
               name="program"
               options={streams}
             />
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               name="category"
               displayName="Category"
@@ -175,16 +169,12 @@ export default function MainPage(props) {
               limit={1}
             />
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               name="quota"
               displayName="Quota"
               options={quotas}
             />
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               name="seat"
               displayName="Gender"
@@ -192,8 +182,6 @@ export default function MainPage(props) {
               limit={1}
             />
             <MultiSelect
-              reset={reset}
-              setReset={setReset}
               handleChange={getOptions}
               name="courseDuration"
               displayName="course duration"

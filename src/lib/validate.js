@@ -10,7 +10,7 @@ export function Swal_error(error_name) {
   });
 }
 
-export function Swall_success(error_name) {
+export function Swall_success() {
   Swal.fire({
     title: "Success",
     icon: "success",
@@ -20,13 +20,15 @@ export function Swall_success(error_name) {
 
 export default function validate(inputs) {
   let isValid = true;
+
+  // checking for error
   Object.entries(inputs).forEach((input) => {
     if (input[1].length === 0) {
       Swal_error(input[0]);
       isValid = false;
     }
-    // else console.log(input);
   });
+
   if (isValid) Swall_success();
   return isValid;
 }

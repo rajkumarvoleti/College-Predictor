@@ -25,5 +25,6 @@ export default function filter_clg(inputs) {
   const filtered_clgs = clg_list
     .filter((clg) => isValid(clg, inputs, keys) && clg.closingRank >= rank)
     .sort((clg1, clg2) => clg1.closingRank - clg2.closingRank);
+
   return filtered_clgs;
 }

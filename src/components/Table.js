@@ -71,15 +71,15 @@ export default function Table({
     clg.closingRank,
   ]);
   updateLength(filtered_clgs.length);
-  // console.log(filtered_clgs);
 
   // paginate data
   const start = (page - 1) * limit;
   const end = Math.min(dataLength, page * limit);
   const data = filtered_clgs.slice(start, end);
+
   // device width and height
   const { width } = useWindowDimensions();
-  // console.log(width);
+
   return (
     <TableDiv>
       <thead>

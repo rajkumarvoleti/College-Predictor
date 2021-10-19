@@ -52,8 +52,8 @@ export const courseDuration = getList("courseDuration", all_clgs);
 
 export const exams = ["JEE Advanced", "JEE Main"];
 
-// categorizing ollege list by type
-const clgs_by_type = {};
+// categorizing college list by type
+let clgs_by_type = {};
 types.forEach((type) => {
   clgs_by_type[type] = [];
 });

@@ -70,32 +70,35 @@ export default function MultiSelect({
   displayName,
 }) {
   const multiSelectref = react.createRef();
+
+  // setting option value
   let options = [];
   Options.forEach((option) => {
     options.push({ name: option });
   });
 
+  // state variables
   const [value, setValue] = useState([]);
   const [className, setClassName] = useState("");
   const [dataLength, setDataLength] = useState(0);
 
+  // add reset and selectall options
   if (limit !== 1 && options.length > 1)
-    // add reset and selectall options
     options = [
       { name: "Reset", value: 0 },
       { name: "SelectAll", value: 1 },
       ...options,
     ];
 
-  //change accorfding to the option
-  function handleChangeUtil(name, selectedList, selectedItem) {
+  async function handleChangeUtil(name, selectedList, selectedItem) {
+    // selct alll and reset functionaity
     if (selectedItem.name === "Reset") {
-      setValue([]);
       selectedList = [];
+      setValue([]);
     } else if (selectedItem.name === "SelectAll") {
       selectedList = options;
       setValue(options);
-    }
+    } else setValue([...value, selectedItem]);
 
     // filter items
     const notClg = [
@@ -117,11 +120,7 @@ export default function MultiSelect({
     handleChange(name, selectedList);
   }
 
-  //  if reset is clicked int he main page
-  if (reset && value.length !== 0) {
-    setReset(false);
-  }
-
+  //change accorfding to the option
   const getPlaceHolder = () => {
     if (dataLength === 0) return "Select an option";
     else if (dataLength === 1) return "1 option selected";

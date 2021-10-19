@@ -32,9 +32,11 @@ const Pagination = styled.div`
 `;
 
 export default function Result() {
+  // state variables
   const [page, setPage] = useState(1);
   const [dataLength, setDataLength] = useState(0);
 
+  // number of pages
   const limit = 10;
   const number_of_pages = Math.max(1, Math.ceil(dataLength / limit));
 
