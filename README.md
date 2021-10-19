@@ -9,7 +9,7 @@
 ## Website Link
 
 ```sh
-https://college-predictor.netlify.app/
+[Click here](https://college-predictor.netlify.app/)
 ```
 
 ## Install
