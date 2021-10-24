@@ -30,6 +30,7 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     font-size: 1.5rem;
     line-height:2;
+    min-height: 100vh;
   }
   a {
     text-decoration: none;

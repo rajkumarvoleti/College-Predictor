@@ -8,7 +8,9 @@
 
 ## Website Link
 
-<a src="https://college-predictor.netlify.app/">Click here</a>
+```sh
+[Click here](https://college-predictor.netlify.app/)
+```
 
 ## Install
 
